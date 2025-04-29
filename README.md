@@ -1,6 +1,6 @@
 # Formula Junior Series Performance Analyzer
 *A predictive model to identify future Formula 1 talent using Formula 2 and Formula 3 data*
-**By Andry Rakotonjanabelo & Md Nafisul Hasan Sami**
+**By Andry Rakotonjanabelo**
 
 ## Project Overview
 This machine learning project analyzes Formula 2 and Formula 3 performance data to predict which junior drivers are most likely to succeed in Formula 1. The model evaluates race results, qualifying performance, lap times, and career progression patterns.
