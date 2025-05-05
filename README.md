@@ -1,42 +1,46 @@
-# Formula Junior Series Performance Analyzer
-*A predictive model to identify future Formula 1 talent using Formula 2 and Formula 3 data*
+# Formula Junior Series Performance Analyzer  
+*A predictive model to identify future Formula 1 talent using Formula 2 and Formula 3 data*  
 **By Andry Rakotonjanabelo**
 
-## Project Overview
-This machine learning project analyzes Formula 2 and Formula 3 performance data to predict which junior drivers are most likely to succeed in Formula 1. The model evaluates race results, qualifying performance, lap times, and career progression patterns.
+## Project Overview  
+This repository contains two complementary Jupyter notebooks:  
+1. **Prelim_EDA_Andry.ipynb** – an initial exploratory data analysis, downloading and inspecting raw F2/F3 data, summary statistics, and cross-series comparisons (wins, positions by team).  
+2. **EDA_formula_2.ipynb** – a deeper dive into Formula 2:  
+   - Feature engineering (time-to-seconds conversions, gap cleaning)  
+   - Grouping by driver to compute aggregate metrics (total laps, average gap, speed, finish time, best lap)  
+   - Labeling which drivers have “reached F1”  
+   - Unsupervised clustering with a pure-NumPy KMeans (to avoid BLAS/threadpool issues)  
+   - PCA projection and 2D/3D visualizations highlighting F1 graduates  
+   - Quantitative cluster validation (Silhouette, Calinski–Harabasz, Davies–Bouldin) and cluster “purity” vs. F1 labels
 
-## Key Features
-- **Data Ingestion**:  Reading race data from CSV files and structured HTML tables.
-- **Exploratory Data Analysis (EDA)**:  Analyzing F2 and F3 datasets to identify key performance indicators and trends.
-- **Data Cleaning and Preprocessing**:  Handling missing values, inconsistencies, and data type conversions for model training.
+## Key Features  
+- **Data Ingestion**  
+  - Download F2 race results via KaggleHub  
+  - Read F3 team/driver tables from HTML  
+- **Preliminary EDA**  
+  - Dataset overview, `info()`/`describe()`, relational F1 dataset integration  
+  - Barplots comparing F2 vs F3 wins, scatter of team performance across series  
+- **Advanced EDA & Modeling**  
+  - Time string parsing into seconds for `TIME` and `BEST` columns  
+  - Cleaning of `GAP` field (DNF removal, “–” and “1 LAP” replacements)  
+  - Aggregation by driver and joining with manual F1-graduation labels  
+  - Custom NumPy KMeans clustering and PCA dimensionality reduction  
+  - 2D scatter in PCA space and 3D feature‐combination plots, with F1 drivers highlighted  
+  - Metrics to assess cluster quality and alignment with actual F1 promotions  
 
-## Data Sources
+## Data Sources  
 | Source | Description | Access Method |
 |--------|-------------|---------------|
-| F2 Race Results (2018-2019) |  Race results for F2 seasons, including laps, times, gaps, and driver information. | CSV Files |
-| F3 Teams & Drivers (2019) | List of teams, drivers, chassis, and engine details for the F3 season. | CSV Files |
-| F3 Driver Standings (2023) | Standings for the 2023 F3 season, including points, wins, and other statistics. | CSV Files |
+| F2 Race Results (2018-2019) | Laps, times, gaps, speeds, pilot names, teams | KaggleHub CSV |
+| F3 Teams & Drivers (2019) | Team, chassis, engine, drivers | HTML scrape via `pd.read_html` |
+| F3 Driver Standings (2023) | Points, wins, podiums | KaggleHub CSV |
 
-## Data Columns of Interest
-### F2 Race Results
-- LAPS
-- TIME
-- GAP
-- KPH
-- BEST (Best Lap Time)
-- PILOT NAME
-- TEAM
+## How to Reproduce  
+1. `pip install -r requirements.txt`  
+2. Open and run **Prelim_EDA_Andry.ipynb** to see basic data checks and F2 vs F3 comparisons.  
+3. Open **EDA_formula_2.ipynb** to step through feature engineering, clustering, PCA, visualizations, and clustering‐validation metrics.  
 
-### F3 Teams and Drivers
-- Team
-- Chassis
-- Engine
-- Driver
-
-### F3 Driver Standings
-- Driver
-- Entrant
-- RS (Races Started)
-- W (Wins)
-- PD (Podiums)
-- P (Points)
+## Conclusions & Next Steps  
+- Early EDA reveals distribution of wins and team performance across F2/F3.  
+- Advanced EDA shows that consistent front-runners in F2 (Cluster 1) largely correspond to those who graduate to F1.  
+- Clustering metrics are moderate—further feature engineering or a supervised model (e.g. logistic regression, random forest) could improve prediction of F1 promotions.  
